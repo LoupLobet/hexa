@@ -45,7 +45,6 @@ func newWindow(path string) (*Window, error) {
 		return nil, err
 	}
 	w := &Window{
-		name: path,
 		acme: win,
 		addrLen: 8,
 		lines: []*WindowLine{},
@@ -61,6 +60,10 @@ func newWindow(path string) (*Window, error) {
 			return nil, err
 		}
 		offset += n
+	}
+	// window name
+	if err := w.acme.Ctl("name %s/hexa", path); err != nil {
+		return nil, err
 	}
 	// mark window as clean and go move cursor to first line
 	if err := win.Ctl("clean"); err != nil {
